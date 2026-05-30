@@ -1,0 +1,32 @@
+version: '3.8'
+
+# =============================================
+# Orquestación de contenedores con Docker Compose
+# IE5: Asegura el correcto funcionamiento del microservicio
+# =============================================
+
+services:
+
+  # Microservicio principal Spring Boot
+  microservicio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: microservicio-ep2
+    ports:
+      - "8080:8080"          # Puerto local:puerto contenedor
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SERVER_PORT=8080
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider",
+             "http://localhost:8080/actuator/health"]
+      interval: 30s          # Verifica cada 30 segundos
+      timeout: 10s           # Espera máximo 10 segundos
+      retries: 3             # Reintenta 3 veces antes de marcar como unhealthy
+      start_period: 40s      # Espera 40s antes de empezar a verificar
+    restart: unless-stopped  # Reinicia automáticamente si falla
+
+networks:
+  default:
+    name: ep2-network

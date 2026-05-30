@@ -1,0 +1,161 @@
+# =============================================
+# Pipeline CI/CD - Ingeniería DevOps EP2
+# Asignatura: DOY0101
+# =============================================
+
+name: CI/CD Pipeline - Microservicio EP2
+
+# Se ejecuta en cada push a main o pull request
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  # -----------------------------------------------
+  # JOB 1: Construcción y Pruebas (IE1, IE2)
+  # -----------------------------------------------
+  build-and-test:
+    name: Build y Pruebas Unitarias
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Descarga el código del repositorio
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # 2. Configura Java 17
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # 3. Compila el proyecto
+      - name: Compilar proyecto con Maven
+        run: mvn clean compile -B
+
+      # 4. Ejecuta las pruebas unitarias con JUnit (IE2)
+      - name: Ejecutar pruebas unitarias
+        run: mvn test -B
+
+      # 5. Publica el reporte de resultados de pruebas
+      - name: Publicar reporte de pruebas
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reporte-pruebas
+          path: target/surefire-reports/
+
+      # 6. Construye el JAR
+      - name: Empaquetar aplicación (JAR)
+        run: mvn package -DskipTests -B
+
+      # 7. Guarda el JAR como artefacto
+      - name: Guardar JAR como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar
+          path: target/*.jar
+
+  # -----------------------------------------------
+  # JOB 2: Análisis de Seguridad con Snyk (IE3)
+  # -----------------------------------------------
+  security-scan:
+    name: Análisis de Seguridad
+    runs-on: ubuntu-latest
+    needs: build-and-test   # Solo si el build pasó
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # Escaneo de vulnerabilidades con Snyk
+      - name: Escaneo de seguridad con Snyk
+        uses: snyk/actions/maven@master
+        continue-on-error: false    # BLOQUEA el pipeline si hay fallas críticas
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --fail-on=all
+
+      # Subir resultados de seguridad a GitHub Security tab
+      - name: Subir reporte SARIF a GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: snyk.sarif
+        continue-on-error: true
+
+  # -----------------------------------------------
+  # JOB 3: Construcción y publicación de imagen Docker (IE1)
+  # -----------------------------------------------
+  docker-build:
+    name: Construir Imagen Docker
+    runs-on: ubuntu-latest
+    needs: security-scan    # Solo si el análisis de seguridad pasó
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # Configura Docker Buildx (builder avanzado)
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Login a Docker Hub
+      - name: Login a Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Construye y publica la imagen Docker
+      - name: Construir y publicar imagen Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/microservicio-ep2:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/microservicio-ep2:${{ github.sha }}
+
+  # -----------------------------------------------
+  # JOB 4: Despliegue automático con Docker Compose (IE4, IE5)
+  # -----------------------------------------------
+  deploy:
+    name: Despliegue Automático
+    runs-on: ubuntu-latest
+    needs: docker-build     # Solo si la imagen Docker fue publicada
+    if: github.ref == 'refs/heads/main'   # Solo en rama main
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # Inicia el servicio con Docker Compose (entorno simulado)
+      - name: Levantar entorno con Docker Compose
+        run: |
+          docker compose up -d --build
+
+      # Espera a que el microservicio esté disponible
+      - name: Verificar que el microservicio responde
+        run: |
+          echo "Esperando que el microservicio esté listo..."
+          sleep 40
+          curl --fail http://localhost:8080/actuator/health \
+            && echo "Microservicio OK" \
+            || (echo "Microservicio no responde" && exit 1)
+
+      # Muestra los logs del contenedor para trazabilidad (IE4)
+      - name: Mostrar logs del contenedor
+        if: always()
+        run: docker compose logs microservicio
+
+      # Detiene los contenedores al final del pipeline
+      - name: Detener contenedores
+        if: always()
+        run: docker compose down

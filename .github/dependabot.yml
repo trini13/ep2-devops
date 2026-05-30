@@ -1,0 +1,27 @@
+# =============================================
+# Configuración de Dependabot (IE3)
+# Analiza automáticamente las dependencias del proyecto
+# y crea Pull Requests cuando hay actualizaciones de seguridad
+# =============================================
+
+version: 2
+
+updates:
+  # Escanea dependencias de Maven (Java/Spring Boot)
+  - package-ecosystem: "maven"
+    directory: "/"               # Busca el pom.xml en la raíz
+    schedule:
+      interval: "weekly"         # Revisa cada semana
+    open-pull-requests-limit: 5  # Máximo 5 PRs abiertos a la vez
+    labels:
+      - "dependencias"
+      - "seguridad"
+
+  # Escanea las acciones de GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "github-actions"
+      - "dependencias"
