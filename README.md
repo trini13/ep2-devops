@@ -163,8 +163,19 @@ Las conclusiones y reflexiones personales son de autoría propia.
 
 ## Reflexión Personal
 
-*(Escribe aquí tu reflexión personal sin usar IA — mínimo un párrafo explicando qué aprendiste
+
+Durante el desarrollo de esta evaluación, el mayor desafío que enfrenté fue comprender el funcionamiento del pipeline CI/CD. Al principio, no tenía claridad sobre cómo los jobs se conectaban entre sí ni por qué el orden importaba. Ver que un job dependía del anterior para ejecutarse me ayudó a entender que el pipeline no es solo una secuencia de comandos, sino una cadena donde cada etapa garantiza que la siguiente tenga sentido.
+
+También aprendí que configurar herramientas como Snyk y Docker Hub requiere más que solo instalarlas hay que conectarlas correctamente con el repositorio mediante secrets, lo cual me enseñó la importancia de la seguridad en los entornos de desarrollo. Cometer errores en esa configuración y tener que corregirlos me permitió entender mucho mejor cómo funciona cada pieza.
+
+En general, esta evaluación me demostró que DevOps no se trata solo de automatizar tareas, sino de construir un flujo confiable que acompañe el código desde que se escribe hasta que se despliega.
+
+
 y cómo contribuiste al proyecto)*
+
+En cuanto a nuestra contribución al proyecto, el trabajo fue dividido entre ambos integrantes. Sebastián Antipan se encargó del desarrollo del microservicio con Spring Boot, incluyendo la estructura del controlador, servicio y modelo. Por mi parte, me encargué de la configuración del Dockerfile, Docker Compose, las pruebas unitarias con JUnit y el armado completo del pipeline CI/CD en GitHub Actions, incluyendo la integración con Snyk y Docker Hub. A pesar de que Sebastián enfrentó dificultades con su equipo durante parte del proceso, su aporte en la base del microservicio fue fundamental para poder construir todo el pipeline sobre él.
+
+
 
 ---
 
