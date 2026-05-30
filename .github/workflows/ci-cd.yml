@@ -115,7 +115,7 @@ jobs:
 
       # Construye y publica la imagen Docker
       - name: Construir y publicar imagen Docker
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: true
