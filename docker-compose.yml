@@ -27,6 +27,16 @@ services:
       start_period: 40s      # Espera 40s antes de empezar a verificar
     restart: unless-stopped  # Reinicia automáticamente si falla
 
+    # Parámetros de escalabilidad y gobernanza (IE3 / IE5)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'       # Máximo 50% de un núcleo de CPU
+          memory: 512M       # Máximo 512 MB de memoria RAM
+        reservations:
+          cpus: '0.25'       # Reserva garantizada de CPU
+          memory: 256M       # Reserva garantizada de RAM
+
 networks:
   default:
     name: ep2-network
