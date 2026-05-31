@@ -161,7 +161,7 @@ Las conclusiones y reflexiones personales son de autoría propia.
 
 ---
 
-## Reflexión Personal
+## Reflexión Personal Cristina Silva
 
 
 Durante el desarrollo de esta evaluación, el mayor desafío que enfrenté fue comprender el funcionamiento del pipeline CI/CD. Al principio, no tenía claridad sobre cómo los jobs se conectaban entre sí ni por qué el orden importaba. Ver que un job dependía del anterior para ejecutarse me ayudó a entender que el pipeline no es solo una secuencia de comandos, sino una cadena donde cada etapa garantiza que la siguiente tenga sentido.
@@ -175,6 +175,11 @@ y cómo contribuiste al proyecto)*
 
 En cuanto a nuestra contribución al proyecto, el trabajo fue dividido entre ambos integrantes. Sebastián Antipan se encargó del desarrollo del microservicio con Spring Boot, incluyendo la estructura del controlador, servicio y modelo. Por mi parte, me encargué de la configuración del Dockerfile, Docker Compose, las pruebas unitarias con JUnit y el armado completo del pipeline CI/CD en GitHub Actions, incluyendo la integración con Snyk y Docker Hub. A pesar de que Sebastián enfrentó dificultades con su equipo durante parte del proceso, su aporte en la base del microservicio fue fundamental para poder construir todo el pipeline sobre él.
 
+
+### Reflexión y Contribución de Sebastián Antipan
+Mi principal aprendizaje se centró en cómo la estructura del microservicio impacta en la automatización y gobernanza. Afrontar las alertas de seguridad y entender que un pipeline "rojo" (bloqueado por Snyk) es en realidad un éxito de protección me enseñó el verdadero valor de DevSecOps. Además, aplicar límites estrictos de CPU y memoria en Docker Compose me dio una visión clara de cómo escalar infraestructura en la nube de forma segura.
+
+**Mi contribución:** Desarrollé el microservicio base con Spring Boot 3 (API REST, controladores, servicios y modelos) y colaboré en la configuración de la orquestación, estableciendo los límites de hardware (escalabilidad) en el `docker-compose.yml`.
 
 
 ---
