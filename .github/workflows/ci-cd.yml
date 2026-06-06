@@ -78,8 +78,8 @@ jobs:
         uses: snyk/actions/maven@master 
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=critical 
+        #with:
+          #args: --severity-threshold=critical 
 
 
   # -----------------------------------------------
