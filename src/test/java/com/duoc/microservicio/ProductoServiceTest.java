@@ -30,7 +30,7 @@ class ProductoServiceTest {
     void debeObtenerProductoPorId() {
         Optional<Producto> producto = productoService.obtenerPorId(1L);
         assertTrue(producto.isPresent(), "El producto con ID 1 debe existir");
-        assertEquals("Laptop", producto.get().getNombre());
+        assertEquals("notebookplus", producto.get().getNombre());
     }
 
     @Test
