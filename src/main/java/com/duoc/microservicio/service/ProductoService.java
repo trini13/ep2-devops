@@ -15,7 +15,7 @@ public class ProductoService {
 
     public ProductoService() {
         // Datos de ejemplo al iniciar
-        productos.add(new Producto(contadorId++, "Laptop", 599990.0, 10));
+        productos.add(new Producto(contadorId++, "notebookplus", 599990.0, 10));
         productos.add(new Producto(contadorId++, "Mouse", 12990.0, 50));
         productos.add(new Producto(contadorId++, "Teclado", 29990.0, 30));
     }
