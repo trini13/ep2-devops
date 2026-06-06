@@ -25,6 +25,8 @@ jobs:
       # 1. Descarga el código del repositorio
       - name: Checkout del código
         uses: actions/checkout@v4
+      - name: Mensaje de prueba
+        run: echo "Hola profesor, este cambio fue hecho en GitHub Actions"
 
       # 2. Configura Java 17
       - name: Configurar Java 17
