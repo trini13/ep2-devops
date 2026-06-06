@@ -173,7 +173,7 @@ En general, esta evaluación me demostró que DevOps no se trata solo de automat
 
 y cómo contribuiste al proyecto)*
 
-En cuanto a nuestra contribución al proyecto, el trabajo fue dividido entre ambos integrantes. Sebastián Antipan se encargó del desarrollo del microservicio con Spring Boot, incluyendo la estructura del controlador, servicio y modelo. Por mi parte, me encargué de la configuración del Dockerfile, Docker Compose, las pruebas unitarias con JUnit y el armado completo del pipeline CI/CD en GitHub Actions, incluyendo la integración con Snyk y Docker Hub. A pesar de que Sebastián enfrentó dificultades con su equipo durante parte del proceso, su aporte en la base del microservicio fue fundamental para poder construir todo el pipeline sobre él.
+En cuanto a nuestra contribución al proyecto, el trabajo fue dividido entre ambos integrantes. Sebastián Antipan se encargó del desarrollo del microservicio con Spring Boot, incluyendo la estructura del controlador, servicio y modelo. Por mi parte, me encargué de la configuración del Dockerfile, Docker Compose, las pruebas unitarias con JUnit y el armado completo del pipeline CI/CD en GitHub Actions, incluyendo la integración con Snyk y Docker Hub.
 
 
 ### Reflexión y Contribución de Sebastián Antipan
