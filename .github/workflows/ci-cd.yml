@@ -118,40 +118,89 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/microservicio-ep2:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/microservicio-ep2:${{ github.sha }}
 
-  # -----------------------------------------------
-  # JOB 4: Despliegue automático con Docker Compose (IE4, IE5)
+# -----------------------------------------------
+  # JOB 4: Despliegue en EC2 AWS Academy
   # -----------------------------------------------
   deploy:
-    name: Despliegue Automático
+    name: Despliegue en EC2
     runs-on: ubuntu-latest
-    needs: docker-build     # Solo si la imagen Docker fue publicada
-    if: github.ref == 'refs/heads/main'   # Solo en rama main
+    needs: docker-build
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # Inicia el servicio con Docker Compose (entorno simulado)
-      - name: Levantar entorno con Docker Compose
-        run: |
-          docker compose up -d --build
+      - name: Desplegar en EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Crear directorio del proyecto si no existe
+            mkdir -p ~/ep3-devops
 
-      # Espera a que el microservicio esté disponible
-      - name: Verificar que el microservicio responde
-        run: |
-          echo "Esperando que el microservicio esté listo..."
-          sleep 40
-          curl --fail http://localhost:8080/actuator/health \
-            && echo "Microservicio OK" \
-            || (echo "Microservicio no responde" && exit 1)
+            # Copiar archivos necesarios
+            cd ~/ep3-devops
 
-      # Muestra los logs del contenedor para trazabilidad (IE4)
-      - name: Mostrar logs del contenedor
-        if: always()
-        run: docker compose logs microservicio
+            # Detener contenedores anteriores si existen
+            docker-compose down || true
 
-      # Detiene los contenedores al final del pipeline
-      - name: Detener contenedores
-        if: always()
-        run: docker compose down
+            # Descargar última imagen
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/microservicio-ep2:latest
 
+            # Crear docker-compose.yml en EC2
+            cat > docker-compose.yml << 'EOF'
+            version: '3.8'
+            services:
+              microservicio:
+                image: ${{ secrets.DOCKERHUB_USERNAME }}/microservicio-ep2:latest
+                container_name: microservicio-ep2
+                ports:
+                  - "8080:8080"
+                restart: unless-stopped
+
+              prometheus:
+                image: prom/prometheus:latest
+                container_name: prometheus
+                ports:
+                  - "9090:9090"
+                volumes:
+                  - ./prometheus.yml:/etc/prometheus/prometheus.yml
+                restart: unless-stopped
+                depends_on:
+                  - microservicio
+
+              grafana:
+                image: grafana/grafana:latest
+                container_name: grafana
+                ports:
+                  - "3000:3000"
+                environment:
+                  - GF_SECURITY_ADMIN_PASSWORD=admin123
+                volumes:
+                  - grafana-data:/var/lib/grafana
+                restart: unless-stopped
+                depends_on:
+                  - prometheus
+
+            volumes:
+              grafana-data:
+            EOF
+
+            # Crear prometheus.yml en EC2
+            cat > prometheus.yml << 'EOF'
+            global:
+              scrape_interval: 15s
+            scrape_configs:
+              - job_name: 'microservicio-ep2'
+                metrics_path: '/actuator/prometheus'
+                static_configs:
+                  - targets: ['microservicio:8080']
+            EOF
+
+            # Levantar servicios
+            docker-compose up -d
+
+            echo "Despliegue completado exitosamente"
