@@ -328,6 +328,6 @@ El mayor aprendizaje de la EP3 fue comprender el proceso completo de llevar un p
 Lo que más me impactó fue entender cómo Prometheus y Grafana trabajan juntos para dar visibilidad al sistema. Antes veía el monitoreo como algo abstracto; ahora comprendo que es una herramienta de toma de decisiones: si la memoria sube sostenidamente o la CPU se dispara, el dashboard te lo muestra antes de que el sistema colapse. Eso es el verdadero valor de la observabilidad en DevOps.
 
 ---
-Cambios prueba
+cambios prueba
 
 *DUOC UC — Ingeniería DevOps DOY0101 — 2025*
