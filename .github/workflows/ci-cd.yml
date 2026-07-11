@@ -46,7 +46,7 @@ jobs:
 
       # 5. Publica el reporte de resultados de pruebas
       - name: Publicar reporte de pruebas
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: reporte-pruebas
@@ -58,7 +58,7 @@ jobs:
 
       # 7. Guarda el JAR como artefacto
       - name: Guardar JAR como artefacto
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: app-jar
           path: target/*.jar
