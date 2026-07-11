@@ -78,7 +78,6 @@ jobs:
       # Escaneo de vulnerabilidades con Snyk
       - name: Escaneo de seguridad con Snyk
         uses: snyk/actions/maven@master
-        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
