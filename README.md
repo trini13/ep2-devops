@@ -333,3 +333,4 @@ cambios prueba
 *DUOC UC — Ingeniería DevOps DOY0101 — 2025*
 
 Despliegue de evidencia EP3 realizado por Cristina Silva en cuenta propia AWS Academy - 11/07/2026
+Feature: se documenta el uso del dashboard de Grafana para el equipo.
