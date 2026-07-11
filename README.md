@@ -331,3 +331,5 @@ Lo que más me impactó fue entender cómo Prometheus y Grafana trabajan juntos 
 cambios prueba
 
 *DUOC UC — Ingeniería DevOps DOY0101 — 2025*
+
+Despliegue de evidencia EP3 realizado por Cristina Silva en cuenta propia AWS Academy - 11/07/2026
