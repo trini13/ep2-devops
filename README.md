@@ -1,7 +1,7 @@
 # Microservicio EP2 — Ingeniería DevOps (DOY0101)
 
 **Evaluación Parcial N°3 — Añadiéndole complejidad a nuestro pipeline**
-**DUOC UC — 2025**
+**DUOC UC — 2026**
 
 ---
 
