@@ -56,4 +56,10 @@ public class ProductoController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    // GET /api/productos/version — endpoint de evidencia EFT
+    @GetMapping("/version")
+    public ResponseEntity<String> version() {
+        return ResponseEntity.ok("EFT DevOps - Cristina Silva - Pipeline funcionando correctamente");
+    }
 }
