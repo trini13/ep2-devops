@@ -335,5 +335,13 @@ cambios prueba
 Despliegue de evidencia EP3 realizado por Cristina Silva en cuenta propia AWS Academy - 11/07/2026
 
 Feature: se documenta el uso del dashboard de Grafana para el equipo.
+<<<<<<< HEAD
+Hotfix: corregido enlace roto en la documentacion del proyecto.
+
+Feature: se documenta el uso del dashboard de Grafana para el equipo.
+=======
+
+Hotfix: corregido enlace roto en la documentacion del proyecto.
+>>>>>>> 210cb6f0dd25e51595be977c70d003b14f5893e2
 
 Hotfix: corregido enlace roto en la documentacion del proyecto.
