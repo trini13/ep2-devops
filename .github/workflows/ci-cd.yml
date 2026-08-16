@@ -97,7 +97,7 @@ jobs:
 
       # Configura Docker Buildx (builder avanzado)
       - name: Configurar Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       # Login a Docker Hub
       - name: Login a Docker Hub
